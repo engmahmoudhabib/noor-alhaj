@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "305962493089",
+    "project_id": "nouralhj-2fb2e",
+    "storage_bucket": "nouralhj-2fb2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305962493089:android:d3c0e80a597a26581b3ce0",
+        "android_client_info": {
+          "package_name": "com.example.elnoor_emp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYBq3z2eju9c6dSCrY7PAGzjkY5KNUcBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
