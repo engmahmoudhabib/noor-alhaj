@@ -61,84 +61,87 @@ class _EmployeeViewState extends State<EmployeeView> {
                         child: Linkify(
                             onOpen: _onOpen, text: 'Error: ${snapshot.error}'));
                   } else {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: ((context, index) {
-                          var data = snapshot.data![index];
-                          return FadeInLeft(
-                              delay: Duration(milliseconds: 600),
-                              child: Container(
-                                margin: const EdgeInsets.all(8),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey.withOpacity(0.3)),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Linkify(
-                                          onOpen: _onOpen,
-                                          text: data.username,
-                                          style: TextStyle(
-                                              color: TColor.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                   /*      const SizedBox(height: 5),
-                                        Linkify(
-                                          onOpen: _onOpen,
-                                          text: data.phonenumber,
-                                          style: TextStyle(
-                                            color: TColor.primary,
-                                            fontSize: 11,
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height*0.9,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: ((context, index) {
+                            var data = snapshot.data![index];
+                            return FadeInLeft(
+                                delay: Duration(milliseconds: 600),
+                                child: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3)),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Linkify(
+                                            onOpen: _onOpen,
+                                            text: data.username,
+                                            style: TextStyle(
+                                                color: TColor.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                        ), */
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          children: [
-                                            SecondaryButton2(
-                                              text: " تعديل",
-                                              onTap: () {
-                                                // controller.getEmployee(data.id);
-
-                                                Get.to(() => ModifyEmployee(
-                                                      id: data.id,
-                                                    ));
-                                              },
+                                     /*      const SizedBox(height: 5),
+                                          Linkify(
+                                            onOpen: _onOpen,
+                                            text: data.phonenumber,
+                                            style: TextStyle(
+                                              color: TColor.primary,
+                                              fontSize: 11,
                                             ),
-                                            SizedBox(width: 20),
-                                            SecondaryButton(
-                                              text: 'إضافة مهمة',
-                                              onTap: () {
-                                                Get.to(() => AddTask(id: data.id.toString(),));
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(width: 5),
-                                    InkWell(
-                                      onTap: () {
-                                        // Get.to(() => UserProfileView());
-                                      },
-                                      child: const CircleAvatar(
-                                        radius: 25,
-                                        backgroundImage: AssetImage(
-                                            "assets/img/bigAvatar.png"),
+                                          ), */
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              SecondaryButton2(
+                                                text: " تعديل",
+                                                onTap: () {
+                                                  // controller.getEmployee(data.id);
+                      
+                                                  Get.to(() => ModifyEmployee(
+                                                        id: data.id,
+                                                      ));
+                                                },
+                                              ),
+                                              SizedBox(width: 20),
+                                              SecondaryButton(
+                                                text: 'إضافة مهمة',
+                                                onTap: () {
+                                                  Get.to(() => AddTask(id: data.id.toString(),));
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ));
-                        }));
+                                      const SizedBox(width: 5),
+                                      InkWell(
+                                        onTap: () {
+                                          // Get.to(() => UserProfileView());
+                                        },
+                                        child: const CircleAvatar(
+                                          radius: 25,
+                                          backgroundImage: AssetImage(
+                                              "assets/img/bigAvatar.png"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          })),
+                    );
                   }
                 })),
           ],
