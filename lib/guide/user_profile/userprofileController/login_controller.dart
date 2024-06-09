@@ -37,19 +37,19 @@ class loginController extends GetxController {
   login2() async {
     showProgress.value = true;
     String phone = PhoneNumber.text;
-  print({
-        'username': phone,
-        'password': password.text,
-        'device_token': GetStorage().read('FCMToken'),
-      });
+    print({
+      'username': phone,
+      'password': password.text,
+      'device_token': GetStorage().read('FCMToken'),
+    });
     try {
       final response =
-          await dio.post("http://85.31.237.33/test/api/auth/login/", data: {
+          await dio.post("http://alnoor-hajj.com/api/auth/login/", data: {
         'username': phone,
         'password': password.text,
         'device_token': GetStorage().read('FCMToken'),
       });
-    
+
       LoginModel user = LoginModel.fromJson(response.data);
       GetStorage().write("id", user.userId);
       GetStorage().write("refresh", user.tokens?.refresh);
@@ -90,7 +90,7 @@ class loginController extends GetxController {
     if (refresh != null) {
       try {
         final response = await dio.post(
-          "http://85.31.237.33/test/api/token/refresh/",
+          "http://alnoor-hajj.com/api/token/refresh/",
           data: {'refresh': refresh},
         );
 

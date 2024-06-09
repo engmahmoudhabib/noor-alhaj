@@ -2,12 +2,10 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:elnoor_emp/manager/employees/views/modify_emp_info.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../comon_widgets/search_bar.dart';
 import '../../comon_widgets/secondary_button.dart';
 import '../../comon_widgets/secondary_button2.dart';

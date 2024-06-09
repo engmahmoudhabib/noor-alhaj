@@ -18,7 +18,8 @@ class ReligousPostController extends GetxController {
   ReligousPostController({required this.api});
   RxList<GuidnaceModel> guidPostList = <GuidnaceModel>[].obs;
   List<IndiviualGuidnaceModel> indiviualGuidePost = [];
-  Rx<IndiviualGuidnaceModel?> indiviualGuidePost2 = Rx<IndiviualGuidnaceModel?>(null);
+  Rx<IndiviualGuidnaceModel?> indiviualGuidePost2 =
+      Rx<IndiviualGuidnaceModel?>(null);
   final GetStorage storage = GetStorage();
   Rx<IndiviualReligiousModel?> post = Rx<IndiviualReligiousModel?>(null);
   Rxn<UserState> userState = Rxn<UserState>();
@@ -26,17 +27,18 @@ class ReligousPostController extends GetxController {
   List<IndiviualReligiousModel> indiviualPost = [];
   RxBool isdone = true.obs;
   RxList<ReligiousCategories> categories = <ReligiousCategories>[].obs;
-  RxList<ReligiousGuidnessCategories> guidanceCategories = <ReligiousGuidnessCategories>[].obs;
-    RxBool show = false.obs ;
+  RxList<ReligiousGuidnessCategories> guidanceCategories =
+      <ReligiousGuidnessCategories>[].obs;
+  RxBool show = false.obs;
 
   var dio = Dio(
     BaseOptions(
-      baseUrl: "http://85.31.237.33/test/api/",
+      baseUrl: "http://alnoor-hajj.com/api/",
     ),
   );
 
-  Future<List<ReligiousPostModel>> getGuidPost(String category) async { 
-    try { 
+  Future<List<ReligiousPostModel>> getGuidPost(String category) async {
+    try {
       userState.value = GuidePostLoading();
       var response = await dio.get(EndPoint.guidnacePost, queryParameters: {
         "category_name": category,
@@ -61,11 +63,12 @@ class ReligousPostController extends GetxController {
           'Failed to load posts: ${e.errModel.nonFieldErrors.toString()}');
     }
   }
-Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
-    show.value = true ;
+
+  Future<IndiviualReligiousModel> fetchGuidnacePost(int id) async {
+    show.value = true;
     try {
-    //  int storedId = await storage.read("idPost");
-    //  print("stored id is $storedId");
+      //  int storedId = await storage.read("idPost");
+      //  print("stored id is $storedId");
       var response = await dio.get(
         EndPoint.getindiviualGuidnacePost(id),
       );
@@ -73,16 +76,16 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
       IndiviualReligiousModel singleGuidePost =
           IndiviualReligiousModel.fromJson(response.data);
       print("the single guide is ${singleGuidePost.created}");
-   /*    indiviualGuidePost = [singleGuidePost];
+      /*    indiviualGuidePost = [singleGuidePost];
       indiviualGuidePost2.value = singleGuidePost   ;
       show.value = false ;
       return singleGuidePost; */
-        IndiviualReligiousModel singlePost =
-        IndiviualReligiousModel.fromJson(response.data);
-    post.value = singlePost;
-    indiviualPost = [singlePost];
-    isdone.value = true;
-    return singlePost;
+      IndiviualReligiousModel singlePost =
+          IndiviualReligiousModel.fromJson(response.data);
+      post.value = singlePost;
+      indiviualPost = [singlePost];
+      isdone.value = true;
+      return singlePost;
     } on ServerExcption catch (e) {
       userState.value =
           OnePostFailure(errMessage: e.errModel.nonFieldErrors.toString());
@@ -91,6 +94,7 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
           'Failed to load posts: ${e.errModel.nonFieldErrors.toString()}');
     }
   }
+
   Future<List<ReligiousPostModel>> getPost(String category) async {
     userState.value = PostLoading();
 
@@ -106,8 +110,7 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
     );
     if (response.statusCode == 400 || response.statusCode == 401) {
       String refresh = GetStorage().read('refreshToken');
-      var getToken = await dio.post(
-          "http://85.31.237.33/test/api/token/refresh/",
+      var getToken = await dio.post("http://alnoor-hajj.com/api/token/refresh/",
           data: {'refresh': refresh});
       Tokens newToken = Tokens.fromJson(jsonDecode(getToken.data));
 
@@ -142,8 +145,7 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
     );
     if (response.statusCode == 400 || response.statusCode == 401) {
       String refresh = GetStorage().read('refreshToken');
-      var getToken = await dio.post(
-          "http://85.31.237.33/test/api/token/refresh/",
+      var getToken = await dio.post("http://alnoor-hajj.com/api/token/refresh/",
           data: {'refresh': refresh});
       Tokens newToken = Tokens.fromJson(jsonDecode(getToken.data));
 
@@ -165,16 +167,15 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
     var accessToken = storage.read("access");
 
     var response = await dio.get(
-      "http://85.31.237.33/test/api/religious-categories/",
-      options: Options(headers: {
-        ApiKeys.auth: "Bearer $accessToken"},
+      "http://alnoor-hajj.com/api/religious-categories/",
+      options: Options(
+        headers: {ApiKeys.auth: "Bearer $accessToken"},
       ),
     );
 
     if (response.statusCode == 400 || response.statusCode == 401) {
       String refresh = GetStorage().read('refreshToken');
-      var getToken = await dio.post(
-          "http://85.31.237.33/test/api/token/refresh/",
+      var getToken = await dio.post("http://alnoor-hajj.com/api/token/refresh/",
           data: {'refresh': refresh});
       Tokens newToken = Tokens.fromJson(jsonDecode(getToken.data));
 
@@ -192,22 +193,22 @@ Future<IndiviualReligiousModel> fetchGuidnacePost(int id ) async {
     return categories;
   }
 
-  Future<List<ReligiousGuidnessCategories>> fetchReliousGuidnessCategories() async {
+  Future<List<ReligiousGuidnessCategories>>
+      fetchReliousGuidnessCategories() async {
     isdone.value = false;
     userState.value = PostLoading();
     var accessToken = storage.read("access");
 
     var response = await dio.get(
-      "http://85.31.237.33/test/api/guidance-categories/",
-      options: Options(headers: {
-        ApiKeys.auth: "Bearer $accessToken"},
+      "http://alnoor-hajj.com/api/guidance-categories/",
+      options: Options(
+        headers: {ApiKeys.auth: "Bearer $accessToken"},
       ),
     );
 
     if (response.statusCode == 400 || response.statusCode == 401) {
       String refresh = GetStorage().read('refreshToken');
-      var getToken = await dio.post(
-          "http://85.31.237.33/test/api/token/refresh/",
+      var getToken = await dio.post("http://alnoor-hajj.com/api/token/refresh/",
           data: {'refresh': refresh});
       Tokens newToken = Tokens.fromJson(jsonDecode(getToken.data));
 

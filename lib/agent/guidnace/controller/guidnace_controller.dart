@@ -15,23 +15,24 @@ import '../model/guidnace_model.dart';
 class GuidnaceController extends GetxController {
   ApiConsumer api;
   GuidnaceController({required this.api});
-  RxBool show = false.obs ;
+  RxBool show = false.obs;
   Rxn<UserState> userState = Rxn<UserState>();
   final GetStorage storage = GetStorage();
   RxList<GuidnaceModel> guidPostList = <GuidnaceModel>[].obs;
   List<IndiviualGuidnaceModel> indiviualGuidePost = [];
-  Rx<IndiviualGuidnaceModel?> indiviualGuidePost2 = Rx<IndiviualGuidnaceModel?>(null);
-  //=================================== 
+  Rx<IndiviualGuidnaceModel?> indiviualGuidePost2 =
+      Rx<IndiviualGuidnaceModel?>(null);
+  //===================================
   var dio = Dio(
-    BaseOptions(baseUrl: "http://85.31.237.33/test/api/"),
+    BaseOptions(baseUrl: "http://alnoor-hajj.com/api/"),
   );
   @override
-  onInit(){
-    super.onInit(); 
+  onInit() {
+    super.onInit();
   }
- 
-  Future<List<GuidnaceModel>> getGuidPost(String category) async { 
-    try { 
+
+  Future<List<GuidnaceModel>> getGuidPost(String category) async {
+    try {
       userState.value = GuidePostLoading();
       var response = await dio.get(EndPoint.guidnacePost, queryParameters: {
         "category_name": category,
@@ -58,8 +59,8 @@ class GuidnaceController extends GetxController {
   }
 
   //=========================================================================
-  Future<IndiviualGuidnaceModel> fetchGuidnacePost(int id ) async {
-    show.value = true ;
+  Future<IndiviualGuidnaceModel> fetchGuidnacePost(int id) async {
+    show.value = true;
     try {
       int storedId = await storage.read("idPost");
       print("stored id is $storedId");
@@ -71,8 +72,8 @@ class GuidnaceController extends GetxController {
           IndiviualGuidnaceModel.fromJson(response.data);
       print("the single guide is ${singleGuidePost.created}");
       indiviualGuidePost = [singleGuidePost];
-      indiviualGuidePost2.value = singleGuidePost   ;
-      show.value = false ;
+      indiviualGuidePost2.value = singleGuidePost;
+      show.value = false;
       return singleGuidePost;
     } on ServerExcption catch (e) {
       userState.value =

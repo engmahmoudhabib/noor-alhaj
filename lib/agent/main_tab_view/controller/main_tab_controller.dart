@@ -9,7 +9,7 @@ class MainTabController extends GetxController {
     int i = GetStorage().read("id");
     print("response.data 111111111111111111111111111111111111111111111111");
     final response = await dio.post(
-        "http://85.31.237.33/test/api/set-active/${i}/",
+        "http://alnoor-hajj.com/api/set-active/${i}/",
         data: {'state': isActive});
     print("response.data  111111111111111111111111111111111111111111111111");
     print(response.data);

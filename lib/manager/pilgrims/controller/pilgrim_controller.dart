@@ -35,7 +35,7 @@ class PilgrimController extends GetxController {
   final GetStorage storage = GetStorage();
   //===================createPilgrim============================
   final TextEditingController nameController = TextEditingController();
-   final TextEditingController numberController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
   final TextEditingController searchName = TextEditingController();
   final TextEditingController fatherController = TextEditingController();
   final TextEditingController grandFatherController = TextEditingController();
@@ -64,7 +64,7 @@ class PilgrimController extends GetxController {
   final imagePicker = ImagePicker();
   var dioInstance = dioo.Dio(
     dioo.BaseOptions(
-      baseUrl: "http://85.31.237.33/test/api/",
+      baseUrl: "http://alnoor-hajj.com/api/",
     ),
   );
   RxList<PilgrimModel> filteredPilgrims = <PilgrimModel>[].obs;
@@ -81,7 +81,9 @@ class PilgrimController extends GetxController {
       filteredPilgrims.value = pilgrimList;
     } else {
       filteredPilgrims.value = pilgrimList.where((pilgrim) {
-        final name = '${pilgrim.firstName} ${pilgrim.fatherName} ${pilgrim.lastName}'.toLowerCase();
+        final name =
+            '${pilgrim.firstName} ${pilgrim.fatherName} ${pilgrim.lastName}'
+                .toLowerCase();
         final phone = pilgrim.phonenumber?.toLowerCase() ?? '';
         final searchQuery = query.toLowerCase();
         return name.contains(searchQuery) || phone.contains(searchQuery);
@@ -159,7 +161,8 @@ class PilgrimController extends GetxController {
       print("the pilgrim response is ${response.data}");
       List<dynamic> jsonResponse = response.data;
       pilgrimList = jsonResponse.map((e) => PilgrimModel.fromJson(e)).toList();
-      filteredPilgrims.value = pilgrimList; // Initialize the filtered list with all pilgrims
+      filteredPilgrims.value =
+          pilgrimList; // Initialize the filtered list with all pilgrims
       return pilgrimList;
     } on ServerExcption catch (e) {
       throw Exception(
@@ -211,7 +214,7 @@ class PilgrimController extends GetxController {
       print(" departure is ${leaveController.text}");
       print(" hotel_address is ${hotelAddController.text}");
       var response = await dio.post(
-        "http://85.31.237.33/test/api/create-pilgrim/",
+        "http://alnoor-hajj.com/api/create-pilgrim/",
         data: {
           "phonenumber": numController.text,
           "first_name": nameController.text,
@@ -256,7 +259,7 @@ class PilgrimController extends GetxController {
     // try {
     print("hello man ");
     var response = await dio.post(
-      "http://85.31.237.33/test/api/create-pilgrim/",
+      "http://alnoor-hajj.com/api/create-pilgrim/",
       data: {
         "phonenumber": "+966512347741",
         "first_name": "1",
@@ -282,7 +285,7 @@ class PilgrimController extends GetxController {
       print("token from updatePil $token");
 
       Map<String, dynamic> requestBody = {
-        "phonenumber": numberController.text,  // Use the controller text
+        "phonenumber": numberController.text, // Use the controller text
         "first_name": nameController.text,
         "last_name": familyController.text,
         "hotel_address": hotelAddController.text,
@@ -430,7 +433,7 @@ class PilgrimController extends GetxController {
     isLoading.value = true;
     update();
     final response = await http.post(
-      Uri.parse("http://85.31.237.33/test/api/create-pilgrim/"),
+      Uri.parse("http://alnoor-hajj.com/api/create-pilgrim/"),
       body: {
         "phonenumber": numController.text,
         "first_name": nameController.text,
@@ -496,7 +499,7 @@ class PilgrimController extends GetxController {
     isLoading.value = true;
     try {
       final response =
-          await dio.delete('http://85.31.237.33/test/api/delete-note/$id/');
+          await dio.delete('http://alnoor-hajj.com/api/delete-note/$id/');
       if (response.statusCode == 204) {
         print("Note deleted successfully");
       } else {

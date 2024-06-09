@@ -28,32 +28,33 @@ class ClientController extends GetxController {
     getPilgrims2();
     super.onInit();
   }
+
   RxList<PilgrimModel> filteredPilgrims = <PilgrimModel>[].obs;
   List<PilgrimModel> pilgrimList = [];
   Rx<IndiviualPilgrim?> onePilgrim = Rx<IndiviualPilgrim?>(null);
- void searchPilgrims(String query) {
+  void searchPilgrims(String query) {
     if (query.isEmpty) {
       filteredPilgrims.value = pilgrimList;
     } else {
       filteredPilgrims.value = pilgrimList.where((pilgrim) {
-        final name = '${pilgrim.firstName} ${pilgrim.fatherName} ${pilgrim.lastName}'.toLowerCase();
+        final name =
+            '${pilgrim.firstName} ${pilgrim.fatherName} ${pilgrim.lastName}'
+                .toLowerCase();
         final phone = pilgrim.phonenumber?.toLowerCase() ?? '';
         final searchQuery = query.toLowerCase();
         return name.contains(searchQuery) || phone.contains(searchQuery);
       }).toList();
     }
   }
+
   getPilgrims2({String? name}) async {
     refreshpligrims.value = true;
     final response = await dio.get(
-      'http://85.31.237.33/test/api/list-guide-pilgrims',
-      queryParameters: {'query': name},
-      options: Options(
-        headers: {
-          'Authorization':'Bearer '+GetStorage().read('access')
-        }
-      )
-    );
+        'http://alnoor-hajj.com/api/list-guide-pilgrims',
+        queryParameters: {'query': name},
+        options: Options(headers: {
+          'Authorization': 'Bearer ' + GetStorage().read('access')
+        }));
     print("response.data");
     print(response.data);
     print("1");
@@ -73,7 +74,7 @@ class ClientController extends GetxController {
     isLoading.value = true;
     try {
       final response =
-          await dio.delete('http://85.31.237.33/test/api/delete-note/$id/');
+          await dio.delete('http://alnoor-hajj.com/api/delete-note/$id/');
       if (response.statusCode == 204) {
         print("Note deleted successfully");
       } else {
@@ -88,7 +89,7 @@ class ClientController extends GetxController {
     } finally {
       isLoading.value = false;
       Get.back();
-        getPilgrims2();
+      getPilgrims2();
     }
   }
 }

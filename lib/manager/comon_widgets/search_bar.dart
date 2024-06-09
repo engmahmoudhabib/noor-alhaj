@@ -28,7 +28,7 @@ class CustomSearchBar extends StatelessWidget {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               hintTextDirection: TextDirection.rtl,
-              hintText: "ابحث عن حاج بالاسم او رقم الجوال",
+              hintText: "ابحث بالاسم او رقم الجوال",
               prefixIcon: Icon(Icons.search, color: TColor.primary, size: 30),
             ),
           ),

@@ -20,7 +20,7 @@ class ProfileController extends GetxController {
   UserInfoModel? pilgrimInfoo;
   var dioInstance = dio.Dio(
     dio.BaseOptions(
-      baseUrl: "http://85.31.237.33/test/api/",
+      baseUrl: "http://alnoor-hajj.com/api/",
     ),
   );
   UserState userState = UserInitial();
@@ -87,41 +87,42 @@ class ProfileController extends GetxController {
   //=================================================================
 
   Future<UserInfoModel> fetchPilgremInfo() async {
-  try {
-    userState = OnInfoLoading();
-    var stored = storage.read("pilgramId"); 
-    print("the client id is $stored");
-    
-    var response = await dioInstance.get(
-      EndPoint.getPilgrimInfo(stored),
-    );
-    
-    print(" ================================================ $response");
-    print(response.data['boarding_time']);
-    
-    UserInfoModel userInfo = UserInfoModel.fromJson(response.data);
+    try {
+      userState = OnInfoLoading();
+      var stored = storage.read("pilgramId");
+      print("the client id is $stored");
 
-    pilgrimInfoo = userInfo;
-    print("the another is ${pilgrimInfoo!.active}");
-    storage.write('imagePath', userInfo.image);
-    imagePath.value = GetStorage().read('imagePath');
-    
-    return userInfo;
-  } on DioException catch (e) {
-    if (e.response != null) {
-      if (e.response!.statusCode == 404) {
-        print("Resource not found: ${e.response!.statusMessage}");
-        userState = OnInfoFailure(errMessage: 'Resource not found');
+      var response = await dioInstance.get(
+        EndPoint.getPilgrimInfo(stored),
+      );
+
+      print(" ================================================ $response");
+      print(response.data['boarding_time']);
+
+      UserInfoModel userInfo = UserInfoModel.fromJson(response.data);
+
+      pilgrimInfoo = userInfo;
+      print("the another is ${pilgrimInfoo!.active}");
+      storage.write('imagePath', userInfo.image);
+      imagePath.value = GetStorage().read('imagePath');
+
+      return userInfo;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 404) {
+          print("Resource not found: ${e.response!.statusMessage}");
+          userState = OnInfoFailure(errMessage: 'Resource not found');
+        } else {
+          print("Server error: ${e.response!.statusMessage}");
+          userState = OnInfoFailure(
+              errMessage: 'Server error: ${e.response!.statusMessage}');
+        }
       } else {
-        print("Server error: ${e.response!.statusMessage}");
-        userState = OnInfoFailure(errMessage: 'Server error: ${e.response!.statusMessage}');
+        print("Unexpected error: ${e.message}");
+        userState = OnInfoFailure(errMessage: 'Unexpected error: ${e.message}');
       }
-    } else {
-      print("Unexpected error: ${e.message}");
-      userState = OnInfoFailure(errMessage: 'Unexpected error: ${e.message}');
+
+      throw Exception('Failed to load posts: ${e.message}');
     }
-    
-    throw Exception('Failed to load posts: ${e.message}');
   }
-}
 }

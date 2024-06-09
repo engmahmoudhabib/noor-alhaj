@@ -1,5 +1,5 @@
 class EndPoint {
-  static String baseUrl = "http://85.31.237.33/test/api/";
+  static String baseUrl = "http://alnoor-hajj.com/api/";
   static String logIn = "auth/login/";
   static String listEmployee = "list-employees";
   static String listPilgrims = "list-pilgrims";

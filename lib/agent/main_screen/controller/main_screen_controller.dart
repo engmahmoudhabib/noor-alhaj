@@ -36,7 +36,7 @@ class MainScreenController extends GetxController {
   }
 
   var dio = Dio(BaseOptions(
-    baseUrl: "http://85.31.237.33/test/api/",
+    baseUrl: "http://alnoor-hajj.com/api/",
   ));
   String? stepName;
   int? stepId;
@@ -51,7 +51,6 @@ class MainScreenController extends GetxController {
       // Add authentication token if required
       String token = storage.read('access') ?? '';
       dio.options.headers['Authorization'] = 'Bearer $token';
-     
 
       var response = await dio.get(EndPoint.listSteps);
       List<dynamic> jsonResponse = response.data;
@@ -135,7 +134,7 @@ class MainScreenController extends GetxController {
   Future<void> completeStep(int stepId) async {
     try {
       var response = await dio.post(
-        'http://85.31.237.33/test/api/complete-step/$stepId/',
+        'http://alnoor-hajj.com/api/complete-step/$stepId/',
       );
 
       if (response.statusCode == 200) {
