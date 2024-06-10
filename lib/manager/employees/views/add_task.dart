@@ -119,31 +119,8 @@ class _AddTaskState extends State<AddTask> {
                             onTap: () {
                               controller.addTask(widget.id);
                               clearText();
-                              print(controller.taskAdd);
-                              if (controller.taskAdd == true) {
-                                showDialog(
-                                    context: context,
-                                    builder: ((context) {
-                                      return AlertDialog(
-                                        content: Container(
-                                          height: 100,
-                                          width: 100,
-                                          child: Column(
-                                            children: [
-                                              Icon(
-                                                Icons.done_all_outlined,
-                                                size: 60,
-                                                color: TColor.primary,
-                                              ),
-                                              Linkify(
-                                                  onOpen: _onOpen,
-                                                  text: "نم إرسال المهمة    "),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }));
-                              }
+                             
+                           
                             },
                             text: "اضف")))
                   ],

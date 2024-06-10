@@ -46,8 +46,16 @@ class NotificationController extends GetxController {
       isDone = true;
       update();
       print("the response from noti is ${response.data}");
+      
+      // Show success popup
+      Get.snackbar(
+        "نجاح",
+        "تم إضافة الإشعار بنجاح",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
 
-      // print("siiii ${done!.message}");
     } on ServerExcption catch (e) {
       throw Exception(
           'Failed to load posts: ${e.errModel.nonFieldErrors.toString()}');

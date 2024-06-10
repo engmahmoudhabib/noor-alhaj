@@ -61,6 +61,8 @@ class loginController extends GetxController {
       GetStorage().write("userType", user.userType);
       GetStorage().write('tawaf', 0);
       GetStorage().write('saee', 0);
+      GetStorage().write("guideImage", user.guideImage);
+      GetStorage().write("guideName", user.guideName);
 
       showProgress.value = false;
       if (user.userType == 'حاج') {

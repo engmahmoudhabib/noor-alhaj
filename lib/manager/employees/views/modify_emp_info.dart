@@ -67,8 +67,8 @@ class _ModifyEmployeeState extends State<ModifyEmployee> {
       ),
       body: controller.employee.value == null
           ? Center(
-              child:
-                  CircularProgressIndicator()) // Show loading indicator while fetching data
+              child: CircularProgressIndicator(),
+            ) // Show loading indicator while fetching data
           : SingleChildScrollView(
               child: GetBuilder<EmployeeController>(
                   init: EmployeeController(),
@@ -134,16 +134,33 @@ class _ModifyEmployeeState extends State<ModifyEmployee> {
                               ],
                             );
                           }),
-                      controller.isLoading == true
+                      controller.isLoading
                           ? Center(
                               child: CircularProgressIndicator(),
                             )
                           : PrimaryButton(
                               onTap: () {
-                                controller.updateEmployee(widget.id);
-                                clearFields();
+                                controller.updateEmployee(widget.id).then((_) {
+                                  clearFields();
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: Text('نجاح'),
+                                      content:
+                                          Text('تم تعديل بيانات الموظف بنجاح'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                          child: Text('موافق'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
                               },
-                              text: "حفظ"),
+                              text: "حفظ",
+                            ),
                     ]);
                   })),
     );

@@ -1,12 +1,9 @@
-// ignore_for_file: avoid_print
-
 import 'package:animate_do/animate_do.dart';
 import 'package:elnoor_emp/manager/chat/controlelr_chat/chat_view_controller.dart';
 import 'package:elnoor_emp/manager/chat/model/chat_model.dart';
 import 'package:elnoor_emp/manager/chat/views/chat_user.dart';
 import 'package:elnoor_emp/manager/comon_widgets/search_bar.dart';
 import 'package:elnoor_emp/theme.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
@@ -31,88 +28,68 @@ class _ChatViewState extends State<ChatView> {
         automaticallyImplyLeading: false,
         title: FadeInDown(
             delay: const Duration(milliseconds: 650),
-            child: const Linkify(onOpen: _onOpen, text: " بدء الدردشة")),
+            child: const Linkify(onOpen: _onOpen, text: "بدء الدردشة")),
         centerTitle: true,
         actions: [],
       ),
-      body: Obx(
-        () =>controller.refreshChat.value
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: TColor.primary,
-                ))
-              : Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          const SizedBox(
-            height: 10,
-          ),
-          CustomSearchBar(
-            whenComplete: () {
-              // if(controller.pilgrimName){controller.getChatList2(name: controller.pilgrimName.text);}else{controller.getChatList2();}
-            },
-            controller: controller.pilgrimName,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Linkify(
-              onOpen: _onOpen,
-              text: 'جميع المحادثات',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: Color(0xFF4E5051),
-              ),
+      body: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        const SizedBox(
+          height: 10,
+        ),
+        CustomSearchBar(
+          whenComplete: () {},
+          controller: controller.pilgrimName,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: const Linkify(
+            onOpen: _onOpen,
+            text: 'جميع المحادثات',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+              color: Color(0xFF4E5051),
             ),
           ),
-          Obx(() => controller.refreshChat.value
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: TColor.primary,
-                ))
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.chats.length,
-                    itemBuilder: (context, index) {
-                      String period = controller.isMorninig(
-                              controller.chats[index].created.hour.toString())
-                          ? "ص"
-                          : "م";
-                      String hour =
-                          " ${controller.chats[index].created.hour}:${controller.chats[index].created.minute} ${period}  ";
-                      return InkWell(
-                        onTap: () {
-                          // controller.LastSearch.add(controller.chats[index]);
-                          controller.LastSearch.any((element) =>
-                                  element.id == controller.chats[index].id)
-                              ? null
-                              : controller.LastSearch.add(
-                                  controller.chats[index]);
-                          for (var i in controller.LastSearch) {
-                            print(i.username);
-                          }
-                          print(controller.LastSearch.length);
-                          // controller.LastSearch.clear();
-                          GetStorage()
-                              .write("chatid", controller.chats[index].id);
-                          Get.to(UserChat(
-                              name: controller.chats[index].username,
-                              image: controller.chats[index].image));
-                        },
-                        child: ContainerChat(
-                          image: controller.chats[index].image,
-                          lastmessage: controller.chats[index].lastMsg,
-                          time: hour,
-                          username: controller.chats[index].username,
-                        ),
-                      );
-                    },
-                  ),
-                )),
-        ]),
-      ),
+        ),
+        Obx(() => controller.refreshChat.value
+            ? Center(
+                child: CircularProgressIndicator(
+                color: TColor.primary,
+              ))
+            : Expanded(
+                child: ListView.builder(
+                  itemCount: controller.filteredChats.length,
+                  itemBuilder: (context, index) {
+                    final chat = controller.filteredChats[index];
+                    final period = controller.isMorninig(chat.created.hour.toString())
+                        ? "ص"
+                        : "م";
+                    final hour = " ${chat.created.hour}:${chat.created.minute} ${period} ";
+                    return InkWell(
+                      onTap: () {
+                        if (!controller.LastSearch.any((element) => element.id == chat.id)) {
+                          controller.LastSearch.add(chat);
+                        }
+                        GetStorage().write("chatid", chat.id);
+                        Get.to(UserChat(
+                            name: chat.username,
+                            image: chat.image));
+                      },
+                      child: ContainerChat(
+                        image: chat.image,
+                        lastmessage: chat.lastMsg,
+                        time: hour,
+                        username: chat.username,
+                      ),
+                    );
+                  },
+                ),
+              )),
+      ]),
     );
   }
 }
@@ -188,22 +165,6 @@ class ContainerChat extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      //     Text.rich(
-                      //       TextSpan(
-                      //         children: [
-                      //           TextSpan(text: "م", style: TextStyle(
-                      //             fontSize: 12 ,
-                      // fontWeight: FontWeight.w400 ,
-                      // color: TColor.black.withOpacity(0.7)
-                      //           )),
-                      //           TextSpan(text: time , style: TextStyle(
-                      //             fontSize: 12 ,
-                      // fontWeight: FontWeight.w400 ,
-                      // color: TColor.black.withOpacity(0.7)
-                      //           ))
-                      //         ]
-                      //       ),
-                      //     ),
                       Linkify(
                         onOpen: _onOpen,
                         text: " ${time} ",

@@ -48,6 +48,7 @@ class _ModifyUserState extends State<ModifyUser> {
     setState(() {
       nameController.text = pilgrim.firstName ?? '';
       numberController.text = pilgrim.phonenumber ?? '';
+      
       hotelnameController.text = pilgrim.hotel ?? '';
       hotelLocController.text = pilgrim.hotelAddress ?? '';
       roomController.text = pilgrim.roomNum.toString();
@@ -98,9 +99,8 @@ class _ModifyUserState extends State<ModifyUser> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: GetBuilder<PilgrimController>(builder: (controller) {
-          return controller.isLoading == true
+      body: Obx(() =>SingleChildScrollView(
+        child: controller.isLoading.value == true
               ? SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: Center(
@@ -174,9 +174,8 @@ class _ModifyUserState extends State<ModifyUser> {
                         },
                         text: "حفظ"),
                   ),
-                ]);
-        }),
-      ),
+                ]),
+      ),)
     );
   }
 }

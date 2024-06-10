@@ -25,8 +25,8 @@ class SecondaryButton2 extends StatelessWidget {
                 style: const TextStyle(color: TColor.primary),
               ),
               const SizedBox(width: 5),
-              const Icon(
-                Icons.message,
+              Icon(
+                text == " تعديل" || text == "تعديل"? Icons.edit : Icons.message,
                 color: TColor.primary,
               ),
             ],

@@ -12,7 +12,6 @@ import '../../comon_widgets/custom_text_field.dart';
 import '../../comon_widgets/number_text_field.dart';
 import '../../comon_widgets/password_custome_text_field.dart';
 import '../../comon_widgets/primary_button.dart';
-
 class NewNotification extends StatefulWidget {
   const NewNotification({super.key});
 
@@ -22,6 +21,7 @@ class NewNotification extends StatefulWidget {
 
 class _NewNotificationState extends State<NewNotification> {
   AddNotificationController controller = Get.put(AddNotificationController());
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -30,24 +30,26 @@ class _NewNotificationState extends State<NewNotification> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: FadeInDown(
-            delay: Duration(milliseconds: 800),
-            child: const Linkify(onOpen: _onOpen, text: 'إضافة اشعار')),
+          delay: Duration(milliseconds: 800),
+          child: const Linkify(onOpen: _onOpen, text: 'إضافة اشعار'),
+        ),
         actions: [
           FadeInRight(
             delay: Duration(milliseconds: 800),
             child: IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Image.asset(
-                  "assets/img/white_arrowBack.png",
-                  color: TColor.black,
-                )),
-          )
+              onPressed: () {
+                Get.back();
+              },
+              icon: Image.asset(
+                "assets/img/white_arrowBack.png",
+                color: TColor.black,
+              ),
+            ),
+          ),
         ],
       ),
-      body: Container(
-        child: SingleChildScrollView(
+      body: Obx(
+        () => SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 20),
@@ -57,10 +59,8 @@ class _NewNotificationState extends State<NewNotification> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: media.width * 0.05),
-                      child: const Linkify(
-                          onOpen: _onOpen, text: " عنوان الاشعار"),
+                      padding: EdgeInsets.symmetric(horizontal: media.width * 0.05),
+                      child: const Linkify(onOpen: _onOpen, text: " عنوان الاشعار"),
                     ),
                     const SizedBox(height: 11),
                     CustomTextField(
@@ -77,12 +77,9 @@ class _NewNotificationState extends State<NewNotification> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: media.width * 0.05),
-                      child: const Linkify(
-                          onOpen: _onOpen, text: "  محتوي الاشعار"),
+                      padding: EdgeInsets.symmetric(horizontal: media.width * 0.05),
+                      child: const Linkify(onOpen: _onOpen, text: "  محتوي الاشعار"),
                     ),
-                    // const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: TextFormField(
@@ -93,7 +90,8 @@ class _NewNotificationState extends State<NewNotification> {
                           hintText: "محتوى الاشعار",
                           hintTextDirection: TextDirection.rtl,
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                       ),
                     ),
@@ -101,14 +99,18 @@ class _NewNotificationState extends State<NewNotification> {
                 ),
               ),
               const SizedBox(height: 20),
-              ZoomIn(
-                  curve: Curves.linear,
-                  delay: Duration(milliseconds: 650),
-                  child: PrimaryButton(
-                      onTap: () {
-                        controller.sendNotification();
-                      },
-                      text: "اضف")),
+              controller.isLoading.value
+                  ? Center(child: CircularProgressIndicator())
+                  : ZoomIn(
+                      curve: Curves.linear,
+                      delay: Duration(milliseconds: 650),
+                      child: PrimaryButton(
+                        onTap: () {
+                          controller.sendNotification();
+                        },
+                        text: "اضف",
+                      ),
+                    ),
             ],
           ),
         ),

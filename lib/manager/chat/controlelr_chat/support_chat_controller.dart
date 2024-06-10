@@ -18,7 +18,7 @@ class SupportChatController extends GetxController {
     int id = GetStorage().read("id");
     int chatid = GetStorage().read("chatid");
     channel = WebSocketChannel.connect(
-        Uri.parse("ws://85.31.237.33/al-noor/ws/manager-chat/${chatid}/${id}"));
+        Uri.parse("ws://alnoor-hajj.com/ws/manager-chat/${chatid}/${id}"));
     channel.stream.listen((event) {
       messages.add(MessageModel.fromJson(jsonDecode(event.toString())));
       // print(messages[0].content);

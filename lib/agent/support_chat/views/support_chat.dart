@@ -18,15 +18,13 @@ class SupportChat extends StatefulWidget {
 }
 
 class _SupportChatState extends State<SupportChat> {
-  String? image;
-  String? name;
+ 
 
   SupportChatController controller = Get.put(SupportChatController());
   @override
   void initState() {
-    // TODO: implement initState
-    image = GetStorage().read("guideImage");
-    name = GetStorage().read("guideName");
+ 
+    
     super.initState();
   }
 
@@ -40,7 +38,7 @@ class _SupportChatState extends State<SupportChat> {
           Container(
             width: media.width * 0.4,
             child: ListTile(
-              title:Text( name ?? '',
+              title:Text(  GetStorage().read("guideName") ?? '',
                 textAlign: TextAlign.right,
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -64,7 +62,7 @@ class _SupportChatState extends State<SupportChat> {
               contentPadding: EdgeInsets.zero,
               trailing: CircleAvatar(
                   backgroundImage: NetworkImage(
-                image ?? '',
+                 GetStorage().read("guideImage") ?? '',
               )),
             ),
           ),

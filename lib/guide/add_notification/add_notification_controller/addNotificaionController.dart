@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:elnoor_emp/guide/add_notification/model/notificaitonmodel.dart';
 import 'package:elnoor_emp/guide/forget_password&&verfy_email/views/verfiaction_done.dart';
 import 'package:elnoor_emp/guide/user_profile/model/loginModel.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,6 +13,7 @@ class AddNotificationController extends GetxController {
   late TextEditingController title;
   late TextEditingController content;
   late List<NotificationModel> notifictions;
+  var isLoading = false.obs;
   // List<NotificationModel> notifications = [];
   @override
   onInit() {
@@ -69,17 +71,47 @@ class AddNotificationController extends GetxController {
     return notifictions;
   }
 
-  sendNotification() async {
-    final response = await http.post(
+ sendNotification() async {
+    try {
+      isLoading.value = true;
+
+      final response = await http.post(
         Uri.parse("http://alnoor-hajj.com/api/send-notification/"),
-        body: {"title": title.text, "content": content.text});
-    print(jsonDecode(utf8.decode(response.bodyBytes)));
-    title.clear();
-    content.clear();
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.off(VerficationDone(
-        content: 'تم اضافة البيانات بنجاح',
-      ));
+        body: {
+          "title": title.text,
+          "content": content.text,
+        },
+      );
+
+      isLoading.value = false;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.defaultDialog(
+          title: "نجاح",
+          middleText: "تم إضافة الإشعار بنجاح",
+          textConfirm: "حسناً",
+          onConfirm: () {
+            Get.back(); // Close the dialog
+          },
+          confirmTextColor: Colors.white,
+          backgroundColor: Colors.green,
+        );
+      }
+
+      title.clear();
+      content.clear();
+    } catch (e) {
+      isLoading.value = false;
+      Get.defaultDialog(
+        title: "خطأ",
+        middleText: "حدث خطأ أثناء إرسال الإشعار: $e",
+        textConfirm: "حسناً",
+        onConfirm: () {
+          Get.back();
+        },
+        confirmTextColor: Colors.white,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
