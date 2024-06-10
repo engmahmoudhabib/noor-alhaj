@@ -42,7 +42,7 @@ class ChatViewController extends GetxController {
   getChatList2({String? name}) async {
     refreshChat.value = true;
     name == '' ? null : isSearch.value = true;
-    var respone = await dio.get("http://alnoor-hajj.com/api/list-chats",
+    var respone = await dio.get("http://alnoor-hajj.com/api/list-guide-chats/",
         queryParameters: {'query': name},
         options: Options(headers: {
           'Authorization': 'Bearer ' + GetStorage().read('access'),

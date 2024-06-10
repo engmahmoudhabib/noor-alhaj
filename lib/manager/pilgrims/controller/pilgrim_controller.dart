@@ -58,6 +58,7 @@ class PilgrimController extends GetxController {
   final TextEditingController toCityController = TextEditingController();
   final TextEditingController guildController = TextEditingController();
   final TextEditingController flightDateController = TextEditingController();
+    final TextEditingController mailController = TextEditingController();
 //=====================updatePilgrim=======================
   Rx<XFile?> image = Rx<XFile?>(null);
   Rx<String?> imagePath = Rx<String?>(null);
@@ -277,123 +278,127 @@ class PilgrimController extends GetxController {
     print("response from add pil ${response.data}");
   }
 
- updatePilgrim(int id) async {
-  try {
-    isLoading.value = true;
-    update();
-    var token = storage.read("access");
-    print("token from updatePil $token");
+  updatePilgrim(int id) async {
+    try {
+      isLoading.value = true;
+      update();
+      var token = storage.read("access");
+      print("token from updatePil $token");
 
-    Map<String, dynamic> requestBody = {
-      "phonenumber": numberController.text, // Use the controller text
-      "first_name": nameController.text,
-      "last_name": familyController.text,
-      "hotel_address": hotelAddController.text,
-      "hotel": hotelController.text,
-      "room_num": roomNumController.text,
-    };
+      Map<String, dynamic> requestBody = {
+        "phonenumber": numberController.text, // Use the controller text
+        "first_name": nameController.text,
+        "last_name": familyController.text,
+        "hotel_address": hotelAddController.text,
+        "hotel": hotelController.text,
+        "room_num": roomNumController.text,
+      };
+      print('==============================');
+      print(requestBody);
+      print('==============================');
 
-    print(requestBody);
+      var response = await dio.put(
+        EndPoint.updatePilgrim(id),
+        options: Options(
+          headers: {
+            ApiKeys.auth: "Bearer $token",
+          },
+          validateStatus: (status) {
+            return status! < 500; // Only throw exceptions for 500+ errors
+          },
+        ),
+        data: requestBody,
+      );
+      print('==============================');
 
-    var response = await dio.put(
-      EndPoint.updatePilgrim(id),
-      options: Options(
-        headers: {
-          ApiKeys.auth: "Bearer $token",
-        },
-        validateStatus: (status) {
-          return status! < 500; // Only throw exceptions for 500+ errors
-        },
-      ),
-      data: requestBody,
-    );
+      print("the response from update pil ${response.data}");
 
-    print("the response from update pil ${response.data}");
-    showDialog(
-      context: Get.context!,
-      builder: ((_) {
-        return AlertDialog(
-          content: Container(
-            height: 100,
-            width: 100,
-            child: Column(
-              children: [
-                Icon(
-                  Icons.done_all_outlined,
-                  size: 60,
-                  color: TColor.primary,
+      print('==============================');
+
+      showDialog(
+        context: Get.context!,
+        builder: ((_) {
+          return AlertDialog(
+            content: Container(
+              height: 100,
+              width: 100,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.done_all_outlined,
+                    size: 60,
+                    color: TColor.primary,
+                  ),
+                  Linkify(onOpen: _onOpen, text: "تم التحديث بنجاح"),
+                ],
+              ),
+            ),
+          );
+        }),
+      ).then((value) {
+        Navigator.pop(Get
+            .context!); // Close the ModifyUser screen after showing the dialog
+      });
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print('Error response data: ${e.response!.data}');
+        print('Error response headers: ${e.response!.headers}');
+        print('Error response request: ${e.response!.requestOptions}');
+        showDialog(
+          context: Get.context!,
+          builder: ((context) {
+            return AlertDialog(
+              content: Container(
+                height: 100,
+                width: 100,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 60,
+                      color: Colors.red,
+                    ),
+                    Linkify(
+                        onOpen: _onOpen,
+                        text: "Failed to update pilgrim: ${e.response!.data}"),
+                  ],
                 ),
-                Linkify(onOpen: _onOpen, text: "تم التحديث بنجاح"),
-              ],
-            ),
-          ),
+              ),
+            );
+          }),
         );
-      }),
-    ).then((value) {
-      Navigator.pop(Get.context!); // Close the ModifyUser screen after showing the dialog
-    });
-
-  } on DioError catch (e) {
-    if (e.response != null) {
-      print('Error response data: ${e.response!.data}');
-      print('Error response headers: ${e.response!.headers}');
-      print('Error response request: ${e.response!.requestOptions}');
-      showDialog(
-        context: Get.context!,
-        builder: ((context) {
-          return AlertDialog(
-            content: Container(
-              height: 100,
-              width: 100,
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 60,
-                    color: Colors.red,
-                  ),
-                  Linkify(
-                      onOpen: _onOpen,
-                      text: "Failed to update pilgrim: ${e.response!.data}"),
-                ],
+      } else {
+        print('Error sending request!');
+        print(e.message);
+        showDialog(
+          context: Get.context!,
+          builder: ((context) {
+            return AlertDialog(
+              content: Container(
+                height: 100,
+                width: 100,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 60,
+                      color: Colors.red,
+                    ),
+                    Linkify(
+                        onOpen: _onOpen,
+                        text: "Failed to update pilgrim: ${e.message}"),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
-      );
-    } else {
-      print('Error sending request!');
-      print(e.message);
-      showDialog(
-        context: Get.context!,
-        builder: ((context) {
-          return AlertDialog(
-            content: Container(
-              height: 100,
-              width: 100,
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 60,
-                    color: Colors.red,
-                  ),
-                  Linkify(
-                      onOpen: _onOpen,
-                      text: "Failed to update pilgrim: ${e.message}"),
-                ],
-              ),
-            ),
-          );
-        }),
-      );
+            );
+          }),
+        );
+      }
+    } finally {
+      isLoading.value = false;
+      update();
     }
-  } finally {
-    isLoading.value = false;
-    update();
   }
-}
-
 
 //====================================
   Future<List<GuideList>> fetchGuide() async {

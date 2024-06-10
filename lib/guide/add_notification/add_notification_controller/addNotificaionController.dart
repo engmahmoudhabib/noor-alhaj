@@ -71,7 +71,7 @@ class AddNotificationController extends GetxController {
     return notifictions;
   }
 
- sendNotification() async {
+ Future<void> sendNotification() async {
     try {
       isLoading.value = true;
 

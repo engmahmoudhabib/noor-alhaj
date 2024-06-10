@@ -29,12 +29,6 @@ class _ModifyUserState extends State<ModifyUser> {
   final PilgrimController controller =
       Get.put(PilgrimController(api: DioConsumer(dio: Dio())));
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController numberController = TextEditingController();
-  final TextEditingController mailController = TextEditingController();
-  final TextEditingController hotelnameController = TextEditingController();
-  final TextEditingController hotelLocController = TextEditingController();
-  final TextEditingController roomController = TextEditingController();
 
   @override
   void initState() {
@@ -46,24 +40,24 @@ class _ModifyUserState extends State<ModifyUser> {
     Future.delayed(Duration(seconds: 2), () async {
        final pilgrim = await controller.getPilgrim(widget.id);
     setState(() {
-      nameController.text = pilgrim.firstName ?? '';
-      numberController.text = pilgrim.phonenumber ?? '';
+      controller.nameController.text = pilgrim.firstName ?? '';
+      controller. numberController.text = pilgrim.phonenumber ?? '';
       
-      hotelnameController.text = pilgrim.hotel ?? '';
-      hotelLocController.text = pilgrim.hotelAddress ?? '';
-      roomController.text = pilgrim.roomNum.toString();
+     controller.  hotelController.text = pilgrim.hotel ?? '';
+      controller. hotelAddController.text = pilgrim.hotelAddress ?? '';
+      controller. roomNumController.text = pilgrim.roomNum.toString();
     });
     });
    
   }
 
   void clearFields() {
-    nameController.clear();
-    numberController.clear();
-    mailController.clear();
-    hotelnameController.clear();
-    hotelLocController.clear();
-    roomController.clear();
+    controller. nameController.clear();
+    controller. numberController.clear();
+    controller. mailController.clear();
+    controller. hotelController.clear();
+    controller. hotelAddController.clear();
+    controller. roomNumController.clear();
   }
 
   List<String> titles = [
@@ -145,17 +139,17 @@ class _ModifyUserState extends State<ModifyUser> {
                                 txtController: (() {
                                   switch (index) {
                                     case 0:
-                                      return nameController;
+                                      return  controller.nameController;
                                     case 1:
-                                      return numberController;
+                                      return  controller.numberController;
                                     case 2:
-                                      return mailController;
+                                      return controller. mailController;
                                     case 3:
-                                      return hotelnameController;
+                                      return  controller.hotelController;
                                     case 4:
-                                      return hotelLocController;
+                                      return  controller.hotelAddController;
                                     case 5:
-                                      return roomController;
+                                      return  controller.roomNumController;
                                     default:
                                       return TextEditingController(); // or any other default controller
                                   }

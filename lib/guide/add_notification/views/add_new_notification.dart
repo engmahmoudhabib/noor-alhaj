@@ -106,7 +106,18 @@ class _NewNotificationState extends State<NewNotification> {
                       delay: Duration(milliseconds: 650),
                       child: PrimaryButton(
                         onTap: () {
-                          controller.sendNotification();
+                          controller.sendNotification().then((v) =>{
+                                 Get.defaultDialog(
+          title: "نجاح",
+          middleText: "تم إضافة الإشعار بنجاح",
+          textConfirm: "حسناً",
+          onConfirm: () {
+            Get.back(); // Close the dialog
+          },
+          confirmTextColor: TColor.primary,
+          backgroundColor: Colors.white,
+        )
+                          });
                         },
                         text: "اضف",
                       ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:elnoor_emp/agent/main_tab_view/view/main_tab_view.dart';
 import 'package:elnoor_emp/employee/employee_tasks/views/employee_task.dart';
@@ -41,6 +43,7 @@ class loginController extends GetxController {
       'username': phone,
       'password': password.text,
       'device_token': GetStorage().read('FCMToken'),
+      'device_type' : Platform.isAndroid ? 'android':'ios',
     });
     try {
       final response =

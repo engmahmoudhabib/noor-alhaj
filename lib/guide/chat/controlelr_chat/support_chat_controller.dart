@@ -17,7 +17,7 @@ late RxList<MessageModel> messages = <MessageModel>[].obs;
     
     int id = GetStorage().read("id");
     int chatid = GetStorage().read("chatid"); 
-    channel = WebSocketChannel.connect( Uri.parse("ws://alnoor-hajj.com/ws/guide-chat/${chatid}/${id}"));
+    channel = WebSocketChannel.connect( Uri.parse("ws://alnoor-hajj.com/ws/list-guide-chats/${chatid}/${id}"));
     channel.stream.listen((event) {
       messages.add(MessageModel.fromJson(jsonDecode(event.toString())));
       // print(messages[0].content);

@@ -26,9 +26,12 @@ class EmployeeController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController numController = TextEditingController();
   final TextEditingController mailController = TextEditingController();
-  final TextEditingController updatedEmppassController = TextEditingController();
-  final TextEditingController updatedEmpnameController = TextEditingController();
-  final TextEditingController updatedEmpmailController = TextEditingController();
+  final TextEditingController updatedEmppassController =
+      TextEditingController();
+  final TextEditingController updatedEmpnameController =
+      TextEditingController();
+  final TextEditingController updatedEmpmailController =
+      TextEditingController();
   final TextEditingController updatedEmpnumController = TextEditingController();
 
   final employees = <EmployeeModel>[].obs;
@@ -59,7 +62,8 @@ class EmployeeController extends GetxController {
       );
       print(" the emp response is ${response.data}");
       List<dynamic> jsonResponse = response.data;
-      List<EmployeeModel> employeeList = jsonResponse.map((e) => EmployeeModel.fromJson(e)).toList();
+      List<EmployeeModel> employeeList =
+          jsonResponse.map((e) => EmployeeModel.fromJson(e)).toList();
       print("the length is ${employeeList.length}");
 
       empList.value = employeeList;
@@ -89,7 +93,10 @@ class EmployeeController extends GetxController {
       updatedEmpnameController.text = getEmployee.username ?? '';
       updatedEmpnumController.text = getEmployee.phonenumber ?? '';
       updatedEmpmailController.text = getEmployee.email ?? '';
+      print('=================================');
+      print(response.data);
 
+      print('=================================');
       employee.value = getEmployee;
 
       return getEmployee;
@@ -98,7 +105,7 @@ class EmployeeController extends GetxController {
     }
   }
 
-  Future<void> addTask( id) async {
+  Future<void> addTask(id) async {
     isLoadingTask.value = true;
     var token = storage.read("access");
     print("the token from the task is $token");
@@ -114,28 +121,26 @@ class EmployeeController extends GetxController {
       );
       taskAdd = true;
       newTask = AddTaskModel.fromJson(response.data);
-        showDialog(
-                                    context: Get.context!,
-                                    builder: ((context) {
-                                      return AlertDialog(
-                                        content: Container(
-                                          height: 100,
-                                          width: 100,
-                                          child: Column(
-                                            children: [
-                                              Icon(
-                                                Icons.done_all_outlined,
-                                                size: 60,
-                                                color: TColor.primary,
-                                              ),
-                                              Linkify(
-                                                  onOpen: _onOpen,
-                                                  text: "نم إرسال المهمة    "),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }));
+      showDialog(
+          context: Get.context!,
+          builder: ((context) {
+            return AlertDialog(
+              content: Container(
+                height: 100,
+                width: 100,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.done_all_outlined,
+                      size: 60,
+                      color: TColor.primary,
+                    ),
+                    Linkify(onOpen: _onOpen, text: "نم إرسال المهمة    "),
+                  ],
+                ),
+              ),
+            );
+          }));
     } on ServerExcption catch (e) {
       throw Exception('Failed to add task: ${e.errModel.nonFieldErrors}');
     } finally {
@@ -164,7 +169,8 @@ class EmployeeController extends GetxController {
       print("New employee response: ${response.data}");
     } on DioError catch (e) {
       print('Error adding employee: ${e.response?.data ?? e.message}');
-      throw Exception('Failed to add employee: ${e.response?.data ?? e.message}');
+      throw Exception(
+          'Failed to add employee: ${e.response?.data ?? e.message}');
     } finally {
       isLoading = false;
     }
@@ -187,9 +193,11 @@ class EmployeeController extends GetxController {
       );
 
       print("Updated employee response: ${response.data}");
+      Get.back();
     } on DioError catch (e) {
       print('Error updating employee: ${e.response?.data ?? e.message}');
-      throw Exception('Failed to update employee: ${e.response?.data ?? e.message}');
+      throw Exception(
+          'Failed to update employee: ${e.response?.data ?? e.message}');
     } finally {
       isLoading = false;
     }
@@ -201,7 +209,9 @@ class EmployeeController extends GetxController {
     } else {
       filteredEmployees.assignAll(
         employees.where((employee) {
-          return employee.username.toLowerCase().contains(searchName.text.toLowerCase());
+          return employee.username
+              .toLowerCase()
+              .contains(searchName.text.toLowerCase());
         }).toList(),
       );
     }
